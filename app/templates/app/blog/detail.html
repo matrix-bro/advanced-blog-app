@@ -3,10 +3,10 @@
 {% block title %} {{ post.title }} {% endblock %}
 
 {% block content %} 
-    <div>
-        <h1>{{ post.title }}</h1>
+    <div class="py-3 space-y-3">
+        <h1 class="text-3xl border-b py-2 font-semibold">{{ post.title }}</h1>
 
-        <p>
+        <p class="italic text-gray-500">
             Published {{ post.created_at }} by {{ post.author }}
         </p>
         <p>

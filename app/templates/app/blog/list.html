@@ -4,19 +4,21 @@
 
 {% block content %} 
     <div>
-        <h1>Blogs</h1>
+        <h1 class="text-3xl border-b py-2 font-bold">Blogs</h1>
 
         {% for post in posts %}
-            <h2>
-                <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
-            </h2>
+            <div class="py-3 space-y-3">
+                <h2 class="text-2xl text-blue-600">
+                    <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
+                </h2>
 
-            <p>
-                Published {{ post.created_at }} by {{ post.author }}
-            </p>
-            <p>
-                {{ post.content|truncatewords:30|linebreaks }}
-            </p>
+                <p class="italic text-gray-500">
+                    Published {{ post.created_at }} by {{ post.author }}
+                </p>
+                <p>
+                    {{ post.content|truncatewords:30|linebreaks }}
+                </p>
+            </div>
         {% endfor %}
     </div>
 
