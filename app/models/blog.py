@@ -1,5 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.query import QuerySet
+
+class PublishedManager(models.Manager):
+    def get_queryset(self) -> QuerySet:
+        return super().get_queryset().filter(status=Blog.StatusType.PUBLISHED)
+
 
 class Blog(models.Model):
     class StatusType(models.TextChoices):
@@ -14,6 +20,9 @@ class Blog(models.Model):
     status = models.CharField(max_length=20, choices=StatusType.choices, default=StatusType.DRAFT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = models.Manager()      # Default manager
+    published = PublishedManager() # custom manager for getting published blog posts.
 
     class Meta:
         ordering = ('-created_at',)
