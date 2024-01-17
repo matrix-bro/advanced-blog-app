@@ -1,0 +1,21 @@
+<!-- Generic Pagination Template -->
+<div class="flex space-x-3 items-center">
+
+    {% if page.has_previous %}
+        <a href="?page={{ page.previous_page_number }}" class="bg-gray-900 text-white py-2 px-3 hover:text-teal-500">Previous</a>
+    {% endif %}
+
+    <div class="flex space-x-1">
+        {% for num in page_range %}
+            {% if num == page.paginator.ELLIPSIS %}
+                <a href="" class="text-white py-2 px-3 disabled bg-gray-900 hover:text-teal-500 ">{{ num }}</a>
+            {% else %}
+            <a href="?page={{ num }}" class="text-white py-2 px-3 {% if page_number == num %} bg-blue-600 hover:text-black {% else %} bg-gray-900 hover:text-teal-500 {% endif %}">{{ num }}</a>
+            {%endif %}
+        {% endfor %}
+    </div>
+
+    {% if page.has_next %}
+        <a href="?page={{ page.next_page_number }}" class="bg-gray-900 text-white py-2 px-3 hover:text-teal-500">Next</a>
+    {% endif %}
+</div>

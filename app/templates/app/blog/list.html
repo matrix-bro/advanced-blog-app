@@ -20,6 +20,9 @@
                 </p>
             </div>
         {% endfor %}
+
+        <!-- Pagination -->
+        {% include "app/pagination.html" with page=posts page_range=page_range %}
     </div>
 
 
