@@ -29,8 +29,8 @@ def posts(request):
         "posts": posts,
     })
 
-def post_detail(request, slug):
-    post = get_object_or_404(Blog, slug=slug, status=Blog.StatusType.PUBLISHED)
+def post_detail(request, year, month, day, slug):
+    post = get_object_or_404(Blog, slug=slug, created_at__year=year, created_at__month=month,created_at__day=day, status=Blog.StatusType.PUBLISHED)
     
     return render(request, 'app/blog/detail.html', {
         'post': post

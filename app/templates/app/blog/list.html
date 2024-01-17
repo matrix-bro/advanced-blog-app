@@ -9,7 +9,7 @@
         {% for post in posts %}
             <div class="py-3 space-y-3">
                 <h2 class="text-2xl text-blue-600">
-                    <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
                 </h2>
 
                 <p class="italic text-gray-500">
