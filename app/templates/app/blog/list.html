@@ -3,26 +3,30 @@
 {% block title %} Blogs {% endblock %}
 
 {% block content %} 
-    <div>
-        <h1 class="text-3xl border-b py-2 font-bold">Blogs</h1>
+    <div class="px-6 md:px-12">
+        <h1 class="text-3xl lg:text-4xl border-b py-2 font-bold text-center">Most Recent</h1>
 
-        {% for post in posts %}
-            <div class="py-3 space-y-3">
-                <h2 class="text-2xl text-blue-600">
-                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-                </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 pt-8">
+            {% for post in posts %}
+                <div class="py-3 space-y-3">
+                    <h2 class="text-2xl text-blue-600">
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </h2>
 
-                <p class="italic text-gray-500">
-                    Published {{ post.created_at }} by {{ post.author }}
-                </p>
-                <p>
-                    {{ post.content|truncatewords:30|linebreaks }}
-                </p>
-            </div>
-        {% endfor %}
+                    <p class="italic text-gray-500">
+                        Published {{ post.created_at }} by {{ post.author }}
+                    </p>
+                    <p>
+                        {{ post.content|truncatewords:30|linebreaks }}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
 
         <!-- Pagination -->
-        {% include "app/pagination.html" with page=posts page_range=page_range %}
+        <div class="flex justify-center pt-8">
+            {% include "app/pagination.html" with page=posts page_range=page_range %}
+        </div>
     </div>
 
 

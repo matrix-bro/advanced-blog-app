@@ -3,7 +3,7 @@
 {% block title %} Share a post {% endblock %}
 
 {% block content %} 
-    <div>
+    <div class="px-6 md:px-12">
         {% if sent %}
             <h1 class="text-3xl border-b py-2 font-bold">E-mail successfully sent.</h1>
             <p>
@@ -11,12 +11,12 @@
             </p>
 
         {% else %}
-            <h1 class="text-3xl border-b py-2 font-bold">Share "{{ post.title }}" by e-mail</h1>
-            <form method="post" novalidate>
+            <h1 class="text-3xl border-b py-2 font-bold">Share <a href="{{ post.get_absolute_url }}" class="hover:text-blue-600">"{{ post.title }}"</a> by e-mail</h1>
+            <form method="post" class="w-full lg:w-1/2 pt-6 space-y-3">
                 {% csrf_token %}
                 {{ form.as_p }}
 
-                <button class="bg-blue-300 hover:bg-gray-900 hover:text-white py-2 px-4 border-2 font-semibold">Share</button>
+                <button class="bg-gray-900 text-white py-2 px-4 border-2 font-semibold rounded-md">Share</button>
             </form>
         {% endif %}
     </div>

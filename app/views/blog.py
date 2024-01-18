@@ -30,7 +30,7 @@ def posts(request):
     posts = Blog.published.all()
 
     # Pagination with {2} posts per page
-    paginator = Paginator(posts, 1)
+    paginator = Paginator(posts, 2)
     page_number = request.GET.get('page', 1)
     
     try:
