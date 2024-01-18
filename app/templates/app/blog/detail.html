@@ -12,6 +12,9 @@
         <p>
             {{ post.content|linebreaks }}
         </p>
+        <p>
+            <a href="{% url 'post_share' post.slug %}" class="underline hover:text-blue-400">Share this post</a>
+        </p>
     </div>
 
 
