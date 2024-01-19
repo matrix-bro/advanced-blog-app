@@ -36,3 +36,22 @@ class Blog(models.Model):
     
     def get_absolute_url(self):
         return reverse('post_detail', args=[self.created_at.year, self.created_at.month, self.created_at.day, self.slug])
+    
+
+class Comment(models.Model):
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="comments")    
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    body = models.TextField()
+    active = models.BooleanField(default=True) # filter inappropriate comments
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['created_at']
+        indexes = [
+            models.Index(fields=['created_at'])
+        ]
+
+    def __str__(self):
+        return f"Comment by {self.name} on {self.blog}"
