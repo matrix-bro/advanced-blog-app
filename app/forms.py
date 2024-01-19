@@ -30,3 +30,18 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['name', 'email', 'body']
+
+    name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={
+        'placeholder': 'John Doe',
+        'class': INPUT_CLASSES
+    }))
+
+    email = forms.EmailField(max_length=100, widget=forms.EmailInput(attrs={
+        'placeholder': 'john@gmail.com',
+        'class': INPUT_CLASSES
+    }))
+
+    body = forms.CharField(required=False, widget=forms.Textarea(attrs={
+        'placeholder': 'Join the discussion...',
+        'class': INPUT_CLASSES
+    }))

@@ -1,14 +1,10 @@
 {% extends "app/base.html" %}
+{% load static %}
 
 {% block title %} {{ post.title }} {% endblock %}
 
 {% block content %} 
     <div class="px-6 md:px-12">
-        {% if comment_posted %}
-            <p>Your comment has been posted. {{ comment_posted }}</p>
-        {% else %}
-            <p>Comment not added {{ comment_posted }}</p>
-        {% endif %}
         <p class="uppercase space-x-3 text-sm tracking-wide">
             <span class="bg-gray-900 text-white py-1 px-3 ">{{ post.author }}</span>
             <span>{{ post.created_at }}</span>
@@ -30,22 +26,37 @@
         
 
         <p class="pt-6">
-            <a href="{% url 'post_share' post.slug %}" class="underline hover:text-blue-400">Share this post</a>
+            <a href="{% url 'post_share' post.slug %}" class="underline text-blue-600 hover:text-blue-400">Share this post</a>
         </p>
 
-        <p class="pt-6">About Author:</p>
+        <!-- About Author -->
+        <div class="pt-8">
+            <h2 class="font-semibold text-xl border-b">About <span class="capitalize">{{ post.author }}</span></h2>
+            <div class="flex space-y-3 flex-col md:flex-row md:space-x-3 pt-4">
+                <div>
+                    <img src="{% static 'images/default-user.png' %}" alt="" class="w-16 h-16 rounded-full">
+                </div>
+                <div>
+                    <p>Admin is a Django Developer, based in New York.</p>
+                    <p>More about Admin</p>
+                </div>
+            </div>
+        </div>
 
         <!-- Comments -->
-        <div class="pt-6">
+        <div class="pt-8">
             {% with comments.count as total_comments %}
-                <h2>{{ total_comments }} comment{{ total_comments|pluralize }}</h2>
+                <h2 class="text-xl font-semibold border-b">{{ total_comments }} comment{{ total_comments|pluralize }}</h2>
             {% endwith %}
 
             {% for comment in comments %}
-                <div>
-                    <p>Comment {{ forloop.counter }} by {{ comment.name }} {{ comment.created_at }}</p>
+                <div class="pt-4">
+                    <p class="capitalize font-semibold">{{ comment.name }}</p>
+                    <p class="text-gray-500 text-sm">{{ comment.created_at }}</p>
 
-                    {{ comment.body|linebreaks}}
+                    <div class="pt-3">
+                        {{ comment.body|linebreaks}}
+                    </div>
                 </div>
             {% empty %}
                 <p>There are no comments.</p>
@@ -54,8 +65,9 @@
             {% include "app/blog/includes/comment_form.html" %}
         </div>
 
-        <div class="pt-6">
-            Related Posts
+        <div class="py-8">
+            <h2 class="font-semibold text-xl border-b">Related Posts</h2>
+            <p class="pt-6">Will be displayed here</p>
         </div>
     </div>
 

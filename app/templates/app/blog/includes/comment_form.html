@@ -1,9 +1,9 @@
 <div class="pt-6">
-    <h2 class="text-2xl">Add a new comment</h2>
-    <form action="{% url 'post_comment' post.slug %}" method="post">
+    <h2 class="text-xl font-semibold border-b">Post a new comment</h2>
+    <form action="{% url 'post_comment' post.slug %}" method="post" class="pt-3 w-full lg:w-1/2">
         {% csrf_token %}
         {{ form.as_p }}
 
-        <button class="bg-gray-900 text-white py-2 px-4">Add Comment</button>
+        <button class="bg-gray-900 text-white py-2 px-4">Comment</button>
     </form>
 </div>
