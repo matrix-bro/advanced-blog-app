@@ -1,4 +1,5 @@
 from django import forms
+from app.models.blog import Comment
 
 INPUT_CLASSES = 'w-full py-2 px-3 rounded-md border'
 
@@ -24,3 +25,8 @@ class PostShareForm(forms.Form):
         'placeholder': 'Any comments...',
         'class': INPUT_CLASSES
     }))
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['name', 'email', 'body']

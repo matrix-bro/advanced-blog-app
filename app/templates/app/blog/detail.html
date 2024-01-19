@@ -4,6 +4,11 @@
 
 {% block content %} 
     <div class="px-6 md:px-12">
+        {% if comment_posted %}
+            <p>Your comment has been posted. {{ comment_posted }}</p>
+        {% else %}
+            <p>Comment not added {{ comment_posted }}</p>
+        {% endif %}
         <p class="uppercase space-x-3 text-sm tracking-wide">
             <span class="bg-gray-900 text-white py-1 px-3 ">{{ post.author }}</span>
             <span>{{ post.created_at }}</span>
@@ -29,6 +34,25 @@
         </p>
 
         <p class="pt-6">About Author:</p>
+
+        <!-- Comments -->
+        <div class="pt-6">
+            {% with comments.count as total_comments %}
+                <h2>{{ total_comments }} comment{{ total_comments|pluralize }}</h2>
+            {% endwith %}
+
+            {% for comment in comments %}
+                <div>
+                    <p>Comment {{ forloop.counter }} by {{ comment.name }} {{ comment.created_at }}</p>
+
+                    {{ comment.body|linebreaks}}
+                </div>
+            {% empty %}
+                <p>There are no comments.</p>
+            {% endfor %}
+
+            {% include "app/blog/includes/comment_form.html" %}
+        </div>
 
         <div class="pt-6">
             Related Posts
