@@ -6,6 +6,7 @@ from django.views.generic import ListView
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from taggit.models import Tag
+from django.db.models import Count
 
 def index(request):
     # Today's top 2 posts
@@ -71,11 +72,19 @@ def post_detail(request, year, month, day, slug):
     comments = post.comments.filter(active=True)
 
     form = CommentForm()
+
+    # List of similar posts
+    post_tag_ids = post.tags.values_list('id', flat=True)                               # Getting all the tags of current post
+    similar_posts = Blog.published.filter(tags__in=post_tag_ids).exclude(id=post.id)    # Getting all posts that contain any of these tags, excluding current post
+
+    # Highest number of tags matched + latest
+    similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-created_at')[:6]
     
     return render(request, 'app/blog/detail.html', {
         'post': post,
         'comments': comments,
-        'form': form
+        'form': form,
+        'similar_posts': similar_posts,
     })
 
 def post_share(request, slug):
