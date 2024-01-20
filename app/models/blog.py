@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.query import QuerySet
 from django.urls import reverse
+from taggit.managers import TaggableManager
 
 class PublishedManager(models.Manager):
     def get_queryset(self) -> QuerySet:
@@ -19,6 +20,7 @@ class Blog(models.Model):
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="blog_posts")
     content = models.TextField()
     status = models.CharField(max_length=20, choices=StatusType.choices, default=StatusType.DRAFT)
+    tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

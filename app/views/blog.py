@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, InvalidPage
 from django.views.generic import ListView
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
+from taggit.models import Tag
 
 def index(request):
     # Today's top 2 posts
@@ -27,8 +28,13 @@ def index(request):
         "posts": posts,
     })
 
-def posts(request):
+def posts(request, tag_slug=None):
     posts = Blog.published.all()
+    
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        posts = posts.filter(tags__in=[tag])
 
     # Pagination with {2} posts per page
     paginator = Paginator(posts, 2)
@@ -47,7 +53,8 @@ def posts(request):
     return render(request, 'app/blog/list.html', {
         "posts": posts,
         "page_range": page_range,
-        'page_number': int(page_number),
+        "page_number": int(page_number),
+        "tag": tag,
     })
 
 class PostListView(ListView):
