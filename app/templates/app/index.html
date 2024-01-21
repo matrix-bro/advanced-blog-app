@@ -37,14 +37,35 @@
 
         </div>
         <div class="">
+            <!-- Most Popular Posts - Displaying Most Commented Posts -->
             <h3 class="bg-gray-900 text-white md:bg-transparent md:border-t-2 md:border-black py-1 md:py-0 tracking-wide">
+                <span class="md:inline-block md:bg-gray-900 px-3 py-2 uppercase text-sm font-semibold">Most Popular</span>
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-x-3">
+                {% get_most_commented_posts 5 as most_commented_posts %}
+                    {% for post in most_commented_posts %}
+                        <div class="py-3 space-y-3 {% if not forloop.last %} border-b {% endif %}">
+                            <h2 class="text-xl font-semibold capitalize">
+                                <a href="{{ post.get_absolute_url }}" class="hover:underline">{{ post.title }}</a>
+                            </h2>
+
+                            <p class="uppercase text-gray-700 font-semibold text-xs">
+                                {{ post.author }}
+                            </p>
+                        </div>
+                    {% endfor %}
+            </div>
+            
+            <!-- Most Recent Posts -->
+            <h3 class="bg-gray-900 mt-6 text-white md:bg-transparent md:border-t-2 md:border-black py-1 md:py-0 tracking-wide">
                 <span class="md:inline-block md:bg-gray-900 px-3 py-2 uppercase text-sm font-semibold">Most Recent</span>
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-x-3">
                 {% show_latest_posts 5 %}
 
                 <!-- {% for post in posts %}
-                    <div class="py-3 space-y-3 border-b">
+                    <div class="py-3 space-y-3 {% if not forloop.last %} border-b {% endif %}">
                         <h2 class="text-xl font-semibold capitalize">
                             <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
                         </h2>
@@ -55,6 +76,8 @@
                     </div>
                 {% endfor %} -->
             </div>
+            
+            
         </div>
     </div>
 {% endblock %}
