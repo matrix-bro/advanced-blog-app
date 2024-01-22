@@ -39,7 +39,7 @@ INSTALLED_APPS = [
 
     'app',
     'taggit',
-    'ckeditor',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +134,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# TinyMCE
+TINYMCE_DEFAULT_CONFIG = {
+    "menubar": True,
+    "height": "500px",
+    "plugins": '''
+            textcolor save link image media preview codesample contextmenu
+            table code lists fullscreen  insertdatetime  nonbreaking
+            contextmenu directionality searchreplace wordcount visualblocks
+            visualchars code fullscreen autolink lists  charmap print  hr
+            anchor pagebreak help
+            ''',
+    "toolbar1": "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft "
+                "aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor "
+                "backcolor casechange permanentpen formatpainter removeformat",
+
+    "toolbar2": "pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | "
+                "a11ycheck ltr rtl | showcomments addcomment code",
+}

@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.db import models
 from app.models.blog import Blog, Comment
-from ckeditor.widgets import CKEditorWidget
-
+from tinymce.widgets import TinyMCE
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
@@ -14,7 +13,7 @@ class BlogAdmin(admin.ModelAdmin):
     raw_id_fields = ('author',)
 
     formfield_overrides = {
-        models.TextField: {"widget": CKEditorWidget},
+        models.TextField: {"widget": TinyMCE},
     }
 
 @admin.register(Comment)

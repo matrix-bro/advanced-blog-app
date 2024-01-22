@@ -4,4 +4,4 @@ sqlparse==0.4.4
 tzdata==2023.4
 psycopg2-binary==2.9.6
 django-taggit==5.0.1
-django-ckeditor==6.7.0
+django-tinymce==3.6.1
