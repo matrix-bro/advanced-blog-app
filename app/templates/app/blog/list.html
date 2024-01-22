@@ -29,7 +29,7 @@
                         Published {{ post.created_at }} by {{ post.author }}
                     </p>
                     <p>
-                        {{ post.content|truncatewords:30|linebreaks }}
+                        {{ post.content|safe|truncatewords_html:6 }}
                     </p>
                 </div>
             {% endfor %}

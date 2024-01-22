@@ -1,6 +1,8 @@
 from django.contrib import admin
-
+from django.db import models
 from app.models.blog import Blog, Comment
+from ckeditor.widgets import CKEditorWidget
+
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
@@ -10,6 +12,10 @@ class BlogAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     prepopulated_fields = {'slug': ('title',)}
     raw_id_fields = ('author',)
+
+    formfield_overrides = {
+        models.TextField: {"widget": CKEditorWidget},
+    }
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):

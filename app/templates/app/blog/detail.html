@@ -15,7 +15,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3">
             <div class="col-span-2">
-                {{ post.content|linebreaks }}
+                {{ post.content|safe }}
             </div>
 
             <div class="hidden lg:block lg:pl-6">
