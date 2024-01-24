@@ -46,17 +46,14 @@ def posts(request, tag_slug=None):
 
     # Search
     form = SearchForm()
-    query = None
+    query = request.GET.get('query', None)
 
-    if 'query' in request.GET:
-        print("Inside query")
+    if query:
         form = SearchForm(request.GET)
 
         if form.is_valid():
             query = form.cleaned_data['query']
             posts = posts.annotate(search=SearchVector('title', 'content')).filter(search=query)
-            # results = Blog.published.annotate(search=SearchVector('title', 'content')).filter(search=query)
-
 
     # Pagination with {2} posts per page
     paginator = Paginator(posts, 2)
