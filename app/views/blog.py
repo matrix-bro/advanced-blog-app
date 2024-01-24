@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from app.forms import PostShareForm, CommentForm
+from app.forms import PostShareForm, CommentForm, SearchForm
 from app.models.blog import Blog, Comment
 from django.core.paginator import Paginator, InvalidPage
 from django.views.generic import ListView
@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from taggit.models import Tag
 from django.db.models import Count
+from django.contrib.postgres.search import SearchVector
 
 def index(request):
     # Today's top 2 posts
@@ -30,12 +31,32 @@ def index(request):
     })
 
 def posts(request, tag_slug=None):
+    """
+        - Default: Displays latest blog posts
+        - if tag_slug, then filter by tag
+        - if query, then filter by query
+        - pagination
+    """
     posts = Blog.published.all()
     
     tag = None
     if tag_slug:
         tag = get_object_or_404(Tag, slug=tag_slug)
         posts = posts.filter(tags__in=[tag])
+
+    # Search
+    form = SearchForm()
+    query = None
+
+    if 'query' in request.GET:
+        print("Inside query")
+        form = SearchForm(request.GET)
+
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            posts = posts.annotate(search=SearchVector('title', 'content')).filter(search=query)
+            # results = Blog.published.annotate(search=SearchVector('title', 'content')).filter(search=query)
+
 
     # Pagination with {2} posts per page
     paginator = Paginator(posts, 2)
@@ -56,6 +77,8 @@ def posts(request, tag_slug=None):
         "page_range": page_range,
         "page_number": int(page_number),
         "tag": tag,
+        "form": form,
+        "query": query,
     })
 
 class PostListView(ListView):
@@ -129,3 +152,18 @@ def post_comment(request, slug):
         comment.save()
 
         return redirect(post)
+
+
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Blog.published.annotate(search=SearchVector('title', 'content')).filter(search=query)
+
+    return render(request, 'app/blog/search.html')

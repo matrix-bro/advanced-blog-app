@@ -1,7 +1,7 @@
 from django.contrib.syndication.views import Feed
 from django.urls import reverse_lazy
 from app.models.blog import Blog
-from django.template.defaultfilters import safe, truncatewords_html
+from django.template.defaultfilters import safe, truncatewords_html, striptags
 
 class LatestPostsFeed(Feed):
     title = 'Expressit Blogs'
@@ -15,7 +15,7 @@ class LatestPostsFeed(Feed):
         return item.title
     
     def item_description(self, item):
-        return truncatewords_html(safe(item.content), 10)
+        return truncatewords_html(safe(striptags(item.content)), 10)
 
     def item_pubdate(self, item):
         return item.created_at

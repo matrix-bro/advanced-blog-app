@@ -40,10 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'app',
-    'taggit',
-    'tinymce',
-    'django.contrib.sites',
+    'taggit',   # tags for blog posts
+    'tinymce',  # editor
+    'django.contrib.sites',     # sitemap
     'django.contrib.sitemaps',
+    'django.contrib.postgres',  # full text search using postgres
 ]
 
 MIDDLEWARE = [

@@ -45,3 +45,9 @@ class CommentForm(forms.ModelForm):
         'placeholder': 'Join the discussion...',
         'class': INPUT_CLASSES
     }))
+
+class SearchForm(forms.Form):
+    query = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Search here',
+        'class': 'w-full'
+    }))    
