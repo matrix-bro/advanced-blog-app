@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from taggit.models import Tag
 from django.db.models import Count
-from django.contrib.postgres.search import SearchVector
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 def index(request):
     # Today's top 2 posts
@@ -53,7 +53,9 @@ def posts(request, tag_slug=None):
 
         if form.is_valid():
             query = form.cleaned_data['query']
-            posts = posts.annotate(search=SearchVector('title', 'content')).filter(search=query)
+            search_vector = SearchVector('title', 'content')
+            search_query = SearchQuery(query)
+            posts = posts.annotate(search=search_vector, rank=SearchRank(search_vector, search_query)).filter(search=search_query).order_by('-rank')
 
     # Pagination with {2} posts per page
     paginator = Paginator(posts, 2)
@@ -150,17 +152,3 @@ def post_comment(request, slug):
 
         return redirect(post)
 
-
-def post_search(request):
-    form = SearchForm()
-    query = None
-    results = []
-
-    if 'query' in request.GET:
-        form = SearchForm(request.GET)
-
-        if form.is_valid():
-            query = form.cleaned_data['query']
-            results = Blog.published.annotate(search=SearchVector('title', 'content')).filter(search=query)
-
-    return render(request, 'app/blog/search.html')
