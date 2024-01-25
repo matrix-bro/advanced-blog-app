@@ -53,9 +53,9 @@ def posts(request, tag_slug=None):
 
         if form.is_valid():
             query = form.cleaned_data['query']
-            search_vector = SearchVector('title', 'content')
+            search_vector = SearchVector('title', weight='A') + SearchVector('content', weight='B') # Prioritizing title
             search_query = SearchQuery(query)
-            posts = posts.annotate(search=search_vector, rank=SearchRank(search_vector, search_query)).filter(search=search_query).order_by('-rank')
+            posts = posts.annotate(search=search_vector, rank=SearchRank(search_vector, search_query)).filter(rank__gte=0.3).order_by('-rank')
 
     # Pagination with {2} posts per page
     paginator = Paginator(posts, 2)
