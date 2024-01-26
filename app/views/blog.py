@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from taggit.models import Tag
 from django.db.models import Count
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 
 def index(request):
     # Today's top 2 posts
@@ -53,9 +53,11 @@ def posts(request, tag_slug=None):
 
         if form.is_valid():
             query = form.cleaned_data['query']
-            search_vector = SearchVector('title', weight='A') + SearchVector('content', weight='B') # Prioritizing title
-            search_query = SearchQuery(query)
-            posts = posts.annotate(search=search_vector, rank=SearchRank(search_vector, search_query)).filter(rank__gte=0.3).order_by('-rank')
+            # search_vector = SearchVector('title', weight='A') + SearchVector('content', weight='B') # Prioritizing title
+            # search_query = SearchQuery(query)
+            # posts = posts.annotate(search=search_vector, rank=SearchRank(search_vector, search_query)).filter(rank__gte=0.3).order_by('-rank')
+
+            posts = posts.annotate(similarity=TrigramSimilarity('title', query) + TrigramSimilarity('content', query)).filter(similarity__gt=0.1).order_by('-similarity')
 
     # Pagination with {2} posts per page
     paginator = Paginator(posts, 2)
